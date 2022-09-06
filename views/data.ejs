@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>回覆:<%= userdata.user %></title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background-color: #faf4f0;
+        }
+        #menu_control{
+            position: absolute;
+            z-index: -2;
+            opacity: 0;
+        }
+        .header{
+            height: 50%;
+            background-color: #ef5500;
+            position: relative;
+        }
+        .logo{
+            width: 60px;
+            height: 64px;
+            margin-left: 10px;
+        }
+        .logo a{
+            display: block;
+            height: 40px;
+        }
+        .logo img{
+            display: block;
+            width: 100%;
+        }
+        .menu_btn {
+            width: 40px;
+            height: 40px;
+            background-color: #000;
+            display: block;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+        }
+        .menu_btn span{
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            display: block;
+            overflow: hidden; /*超出去的範圍會藏起來*/
+        }
+        .menu_btn::before{
+            content: '';
+            position: absolute;
+            height: 2px;
+            left: 2px;
+            width: 36px;
+            background-color: #aaa;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            box-shadow: 0px 8px 0px #aaa,
+                        0px -8px 0px #aaa;
+        }
+        nav{
+            width: 60%;
+            height: calc(100vh - 50px);
+            background-color: #ef5500;
+            opacity: 90%;
+            position: absolute;
+            top: 64px;
+            left: -100%;
+            transform: .5s;
+        }
+        nav a{
+            display: block;
+            text-decoration: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ffffff;
+            background-color: #ef5500;
+        }
+        
+        #menu_control:checked ~ .header nav{
+            left: 0;
+        }
+        
+        @media screen and (min-width:768px){
+            .menu_btn{ display: none; }
+            .header{
+                display: flex;
+                justify-content: space-between;
+                background-color: #ef5500;
+                align-items: center;
+            }
+            .logo{
+                
+            }
+            nav{
+                position: relative;
+                left: 0;
+                display: flex;
+                width: auto;
+                height: auto;
+                top: 0;
+                background-color: transparent;
+            }
+            nav a{
+                border-bottom: none;
+            }
+        }
+        
+        .footer{
+            background-color: #ef5500;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+        }
+        
+    </style>
+</head>
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+<body onload="startup()">
+    <input type="checkbox" name="" id="menu_control"> <!--label可以從遠端控制他打勾或不要打勾--->
+    
+    <div class="header">
+        <h1 class="logo">
+            <a href="#"><img src="https://img.onl/gmtn4T"></a>
+            
+        </h1> 
+        <label for="menu_control" class="menu_btn"> <!--漢堡選單for手機-->
+            <span>選單</span>
+        </label>
+        <nav>
+            <a href="/">測驗開始</a>
+            <a href="#">Outcome介紹</a>
+            <a href="#">會員登入</a>
+            <a href = "/loginPage" target = "_blank">擁有者登入</a>
+            <a href="/contactus">聯絡我們</a>            
+        </nav>
+    </div><!--End of header-->
+    
+    <h4>姓名:<%= userdata.user %>;年齡:<%= userdata.age %>;職業:<%= userdata.career %>
+    </h4>
+    <table>
+        <tr>
+            <th>優先順序</th>
+            <th>項目</th>
+            <th>現況滿意度</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td id="1st"></td>
+            <td id="a1st"></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td id="2nd"></td>
+            <td id="a2nd"></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td id="3rd"></td>
+            <td id="a3rd"></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td id="4th"></td>
+            <td id="a4th"></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td id="5th"></td>
+            <td id="a5th"></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td id="6th"></td>
+            <td id="a6th"></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td id="7th"></td>
+            <td id="a7th"></td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td id="8th"></td>
+            <td id="a8th"></td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td id="9th"></td>
+            <td id="a9th"></td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td id="10th"></td>
+            <td id="a10th"></td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td id="11th"></td>
+            <td id="a11th"></td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td id="12th"></td>
+            <td id="a12th"></td>
+        </tr>
+    </table>
+    <!---
+    <div style="width: 90%;margin:10% 5% 10% 10% ">
+        <canvas id="theChartFirst"></canvas>
+    </div>
+    --->
+    <div style="width: 80%;margin:10%">
+        <canvas id="theChart"></canvas>
+    </div>
+
+    <div align="center" style="margin-bottom:5%">
+        <a href="/responses" ><input type="submit" value="返回前頁"></a>
+    </div>
+    <div class="footer">
+        &copy; copyright 2022 by
+    </div>
+</body>
+
+<script>
+    function startup() {
+        let sortArray;
+        sortArray = ['<%= userdata.sortIndependence %>', '<%= userdata.sortIdentity %>', '<%= userdata.sortAchievement %>', '<%= userdata.sortFreeTime %>', '<%= userdata.sortPower %>', '<%= userdata.sortReputation %>', '<%= userdata.sortMoney %>', '<%= userdata.sortExormisis %>', '<%= userdata.sortSelfEsteem %>', '<%= userdata.sortFamily %>', '<%= userdata.sortSafety %>', '<%= userdata.sortGrowth %>'];
+        let answerArray;
+        answerArray = ['<%= userdata.answerIndependence %>', '<%= userdata.answerIdentity %>', '<%= userdata.answerAchievement %>', '<%= userdata.answerFreeTime %>', '<%= userdata.answerPower %>', '<%= userdata.answerReputation %>', '<%= userdata.answerMoney %>', '<%= userdata.answerExormisis %>', '<%= userdata.answerSelfEsteem %>', '<%= userdata.answerFamily %>', '<%= userdata.answerSafety %>', '<%= userdata.answerGrowth %>'];
+        let titleArray;
+        titleArray = ['獨立性', '認同感', '成就感', '休閒時間', '權力', '聲望', '金錢', '推動力', '自尊', '家庭生活', '安全感', '個人成長'];
+        let subtitleArray;
+        subtitleArray = ['獨立性/自由做你自己想做的事; 能擺脫他人影響', '認同感/成就被肯定，表現有獎勵。', '成就感/成功完成工作，克服障礙，達成目標。', '休閒時間/從事工作以外你喜歡的休閒活動。', '權力/控制別人; 影響、主控。', '聲望/名聲、排行、受尊敬。', '金錢/個人所得的累積，五字登科的能力。', '推動力/要想一直改進工作表現的感覺或需要。', '自尊/你覺得自己有價值的一種感覺，自主性強。', '家庭生活/偏好家庭為中心的活動與興趣。', '安全感/關切工作的安全與穩定、安定。', '個人成長/能力及效率的發展，變成一個比較優秀的人。'];
+        console.log(sortArray,answerArray,titleArray,subtitleArray)
+        
+        //        
+        let firstAnswer = 0;
+        let secondAnswer = 0;
+        let thirdAnswer = 0;
+        let fourthAnswer = 0;
+        let fifthAnswer = 0;
+        let sixthAnswer = 0;
+        let seventhAnswer = 0;
+        let eighthAnswer = 0;
+        let ninthAnswer = 0;
+        let tenthAnswer = 0;
+        let eleventhAnswer = 0;
+        let twelfthAnswer = 0; 
+        //
+
+        for (let i = 0; i < sortArray.length; i++) {
+            switch (sortArray[i]) {
+                case '1':
+                    document.getElementById("1st").textContent = subtitleArray[i];
+                    document.getElementById("a1st").textContent = answerArray[i];
+                    //firstAnswer = answerArray[i];
+                    //document.getElementById("first").textContent = sortArray[i];
+                    break;
+                case '2':
+                    document.getElementById("2nd").textContent = subtitleArray[i];
+                    document.getElementById("a2nd").textContent = answerArray[i];
+                    //secondAnswer = answerArray[i];
+                    //document.getElementById("second").textContent = sortArray[i];
+                    break;
+                case '3':
+                    document.getElementById("3rd").textContent = subtitleArray[i];
+                    document.getElementById("a3rd").textContent = answerArray[i];
+                    //thirdAnswer = answerArray[i];
+                    //document.getElementById("third").textContent = sortArray[i];
+                    break;
+                case '4':
+                    document.getElementById("4th").textContent = subtitleArray[i];
+                    document.getElementById("a4th").textContent = answerArray[i];
+                    //fourthAnswer = answerArray[i];
+                    //document.getElementById("fourth").textContent = sortArray[i];
+                    break;
+                case '5':
+                    document.getElementById("5th").textContent = subtitleArray[i];
+                    document.getElementById("a5th").textContent = answerArray[i];
+                    //fifthAnswer = answerArray[i];
+                    //document.getElementById("fifth").textContent = sortArray[i];
+                    break;
+                case '6':
+                    document.getElementById("6th").textContent = subtitleArray[i];
+                    document.getElementById("a6th").textContent = answerArray[i];
+                    //sixthAnswer = answerArray[i];
+                    //document.getElementById("sixth").textContent = sortArray[i];
+                    break;
+                case '7':
+                    document.getElementById("7th").textContent = subtitleArray[i];
+                    document.getElementById("a7th").textContent = answerArray[i];
+                    //seventhAnswer = answerArray[i];
+                    //document.getElementById("seventh").textContent = sortArray[i];
+                    break;
+                case '8':
+                    document.getElementById("8th").textContent = subtitleArray[i];
+                    document.getElementById("a8th").textContent = answerArray[i];
+                    //eighthAnswer = answerArray[i];
+                    //document.getElementById("eight").textContent = sortArray[i];
+                    break;
+                case '9':
+                    document.getElementById("9th").textContent = subtitleArray[i];
+                    document.getElementById("a9th").textContent = answerArray[i];
+                    //ninthAnswer = answerArray[i];
+                    //document.getElementById("ninth").textContent = sortArray[i];
+                    break;
+                case '10':
+                    document.getElementById("10th").textContent = subtitleArray[i];
+                    document.getElementById("a10th").textContent = answerArray[i];
+                    //tenthAnswer = answerArray[i];
+                    //document.getElementById("tenth").textContent = sortArray[i];
+                    break;
+                case '11':
+                    document.getElementById("11th").textContent = subtitleArray[i];
+                    document.getElementById("a11th").textContent = answerArray[i];
+                    //eleventhAnswer = answerArray[i];
+                    //document.getElementById("eleventh").textContent = sortArray[i];
+                    break;
+                case '12':
+                    document.getElementById("12th").textContent = subtitleArray[i];
+                    document.getElementById("a12th").textContent = answerArray[i];
+                    //twelfthAnswer = answerArray[i];
+                    //document.getElementById("twelfth").textContent = sortArray[i];
+                    break;
+            }
+        }
+
+        /*
+        for (let i = 0; i < sortArray.length; i++) {
+            if (sortArray[i] == 1) {
+                document.getElementById("first").textContent = titleArray[i];
+                firstAnswer = answerArray[i];
+                //document.getElementById("firstcon").textContent = conclusionArray[i];
+            }
+            if (sortArray[i] == 2) {
+                document.getElementById("second").textContent = titleArray[i];
+                secondAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 3) {
+                document.getElementById("third").textContent = titleArray[i];
+                thirdAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 4) {
+                document.getElementById("fourth").textContent = titleArray[i];
+                fourthAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 5) {
+                document.getElementById("fifth").textContent = titleArray[i];
+                fifthAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 6) {
+                document.getElementById("sixth").textContent = titleArray[i];
+                sixthAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 7) {
+                document.getElementById("seventh").textContent = titleArray[i];
+                seventhAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 8) {
+                document.getElementById("eighth").textContent = titleArray[i];
+                eighthAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 9) {
+                document.getElementById("ninth").textContent = titleArray[i];
+                ninthAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 10) {
+                document.getElementById("tenth").textContent = titleArray[i];
+                tenthAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 11) {
+                document.getElementById("eleventh").textContent = titleArray[i];
+                eleventhAnswer = answerArray[i];
+            }
+            if (sortArray[i] == 12) {
+                document.getElementById("twelfth").textContent = titleArray[i];
+                twelfthAnswer = answerArray[i];
+            }
+        }
+        
+
+        //const labelsFirstArray = titleArray;
+        //const labelsFirstArray = [document.getElementById("1st").textContent, document.getElementById("2nd").textContent, document.getElementById("3rd").textContent, document.getElementById("4th").textContent.textContent, document.getElementById("5th").textContent.textContent, document.getElementById("6th").textContent.textContent, document.getElementById("7th").textContent.textContent, document.getElementById("8th").textContent.textContent, document.getElementById("9th").textContent.textContent, document.getElementById("10th").textContent.textContent, document.getElementById("11th").textContent.textContent, document.getElementById("12th").textContent];
+        const labelsFirstArray = [document.getElementById("first").textContent, document.getElementById("second").textContent, document.getElementById("third").textContent, document.getElementById("fourth").textContent.textContent, document.getElementById("fifth").textContent.textContent, document.getElementById("sixth").textContent.textContent, document.getElementById("seventh").textContent.textContent, document.getElementById("eighth").textContent.textContent, document.getElementById("ninth").textContent.textContent, document.getElementById("tenth").textContent.textContent, document.getElementById("eleventh").textContent.textContent, document.getElementById("twelfth").textContent];
+        const dataFirst = {
+            labels: labelsFirstArray,
+            datasets: [{
+            label: '各項現況滿意評分',
+            data: [firstAnswer, secondAnswer, thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer, eighthAnswer, ninthAnswer, tenthAnswer, eleventhAnswer, twelfthAnswer],
+            //data: [firstAnswer, secondAnswer, thirdAnswer],
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(201, 203, 207, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(201, 203, 207, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+            ],
+            borderWidth: 1
+            }]
+        };
+
+        const configFirst = {
+            type: 'bar',
+            data: dataFirst,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+
+        const myChartFirst = new Chart(    
+            document.getElementById('theChartFirst'),
+            configFirst
+        );
+        */
+
+        const labels = titleArray;
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '現況滿意度評分折線圖',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: answerArray
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+
+        const myChart = new Chart(
+            document.getElementById('theChart'),
+            config
+        );
+    }
+</script>
+
+</html>

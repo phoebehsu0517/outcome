@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>回覆已送出</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background-color: #faf4f0;
+        }
+        #menu_control{
+            position: absolute;
+            z-index: -2;
+            opacity: 0;
+        }
+        .header{
+            height: 50%;
+            background-color: #ef5500;
+            position: relative;
+        }
+        .logo{
+            width: 60px;
+            height: 64px;
+            margin-left: 10px;
+        }
+        .logo a{
+            display: block;
+            height: 40px;
+        }
+        .logo img{
+            display: block;
+            width: 100%;
+        }
+        .menu_btn {
+            width: 40px;
+            height: 40px;
+            background-color: #000;
+            display: block;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+        }
+        .menu_btn span{
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            display: block;
+            overflow: hidden; /*超出去的範圍會藏起來*/
+        }
+        .menu_btn::before{
+            content: '';
+            position: absolute;
+            height: 2px;
+            left: 2px;
+            width: 36px;
+            background-color: #aaa;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            box-shadow: 0px 8px 0px #aaa,
+                        0px -8px 0px #aaa;
+        }
+        nav{
+            width: 60%;
+            height: calc(100vh - 50px);
+            background-color: #ef5500;
+            opacity: 90%;
+            position: absolute;
+            top: 64px;
+            left: -100%;
+            transform: .5s;
+        }
+        nav a{
+            display: block;
+            text-decoration: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ffffff;
+            background-color: #ef5500;
+        }
+        
+        #menu_control:checked ~ .header nav{
+            left: 0;
+        }
+        
+        @media screen and (min-width:768px){
+            .menu_btn{ display: none; }
+            .header{
+                display: flex;
+                justify-content: space-between;
+                background-color: #ef5500;
+                align-items: center;
+            }
+            nav{
+                position: relative;
+                left: 0;
+                display: flex;
+                width: auto;
+                height: auto;
+                top: 0;
+                background-color: transparent;
+            }
+            nav a{
+                border-bottom: none;
+            }
+        }
+        
+        .footer{
+            background-color: #ef5500;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+
+<body onload="startup()">
+    <input type="checkbox" name="" id="menu_control"> <!--label可以從遠端控制他打勾或不要打勾--->
+    
+    <div class="header">
+        <h1 class="logo">
+            <a href="#"><img src="https://img.onl/gmtn4T"></a>
+            
+        </h1> 
+        <label for="menu_control" class="menu_btn"> <!--漢堡選單for手機-->
+            <span>選單</span>
+        </label>
+        <nav>
+            <a href="/">測驗開始</a>
+            <a href="#">Outcome介紹</a>
+            <a href="#">會員登入</a>
+            <a href = "/loginPage" target = "_blank">擁有者登入</a>
+            <a href="/contactus">聯絡我們</a>            
+        </nav>
+    </div><!--End of header-->
+    
+    
+    <h1>您的回覆已送出</h1>
+    <h3><%= user %>，您好：<br></h3>
+    <h3>您今年<%= age %>歲，目前的工作內容為<%= career %>。</h3>
+
+    <!---<h3>您的排序如下：</h3>--->
+
+    <h3>您的Outcome性格分析評估報告結果為：
+        第一個最迫切想要擁有的目標是<b id="first"></b>，代表著您想<b id="firstcon"></b>
+        第二個迫切想要擁有的目標是<b id="second"></b>，代表著您想<b id="secondcon"></b>
+        第三個想要擁有的目標是<b id="third"></b>，代表著您想<b id="thirdcon"></b>
+    </h3>
+    <h3>您的第一個已經擁有且最滿意的現況是<b id="twelfth"></b>，代表著您想<b id="twelfthcon"></b>
+        第二個已經擁有且第二滿意的現況是<b id="eleventh"></b>，代表著您想<b id="eleventhcon"></b>
+        第三個已經擁有且第三滿意的現況是<b id="tenth"></b>，代表著您想<b id="tenthcon"></b><br>
+    </h3>
+    <br>
+    <h3>若您欲了解更多，請和李品睿老師接洽，Email為：saccl201703@gmail.com</h3>
+    <h3>下載本頁Outcome性格分析報告，將結果寄至我的Email（<%= email %>）：
+        <a href="file/outcome.pdf" download="Outcome性格分析報告.pdf"></a>
+    </h3>
+
+<!----
+    <h4>姓名:<%= user %>
+    </h4>
+    <h4>年齡:<%= age %>
+    </h4>
+    <h4>信箱:<%= email %>
+    </h4>
+    <h4>工作內容:<%= career %>
+    </h4>
+    <h4>最優先的三個:</h4>
+    <ol>
+        <li id="first"></li>
+        <p id="firstcon"></p>
+        <li id="second"></li>
+        <p id="secondcon"></p>
+        <li id="third"></li>
+        <p id="thirdcon"></p>
+    </ol>
+
+    <h4>倒數三個:</h4>
+    <ol>
+        <li id="twelfth"></li>
+        <p id="twelfthcon"></p>
+        <li id="eleventh"></li>
+        <p id="eleventhcon"></p>
+        <li id="tenth"></li>
+        <p id="tenthcon"></p>
+    </ol>
+----->
+
+    <div style="width: 90%;margin:10% 5% 10% 10% ">
+        <canvas id="theChartFirst"></canvas>
+    </div>
+
+    <div style="width: 90%;margin:10% 5% 10% 10% ">
+        <canvas id="theChartLast"></canvas>  
+    </div>
+    
+    <div style="width: 90%;margin:10% 5% 10% 10% ">>
+        <canvas id="theChart"></canvas>
+    </div>
+    <div align="center" style="margin-bottom:5%">
+        <a href="/" ><input type="submit" value="再次提交表單"></a>
+    </div>
+    
+    <div class="footer">
+        &copy; copyright 2022 by
+    </div>
+</body>
+
+<script>
+    function startup() {
+        let sortArray;
+        sortArray = ['<%= sortIndependence %>', '<%= sortIdentity %>', '<%= sortAchievement %>', '<%= sortFreeTime %>', '<%= sortPower %>', '<%= sortReputation %>', '<%= sortMoney %>', '<%= sortExormisis %>', '<%= sortSelfEsteem %>', '<%= sortFamily %>', '<%= sortSafety %>', '<%= sortGrowth %>'];
+        let answerArray;
+        answerArray = ['<%= answerIndependence %>', '<%= answerIdentity %>', '<%= answerAchievement %>', '<%= answerFreeTime %>', '<%= answerPower %>', '<%= answerReputation %>', '<%= answerMoney %>', '<%= answerExormisis %>', '<%= answerSelfEsteem %>', '<%= answerFamily %>', '<%= answerSafety %>', '<%= answerGrowth %>'];
+        let titleArray;
+        titleArray = ['獨立性', '認同感', '成就感', '休閒時間', '權力', '聲望', '金錢', '推動力', '自尊', '家庭生活', '安全感', '個人成長'];
+
+        let conclusionArray;
+        conclusionArray = ['按照自己的想法進行自己的展業工作，獨立的管理，成為自己的老闆。','因表現優良得到實質獎勵，例如在公開場合或演講會中予以表揚。','成功的完成工作後所獲致的感覺。克服障礙以及成就目標。','可以依自己的意願安排非業務時間，以及從那些非業務時間安排所達到的愉悅程度。','一種能控制及掌握自己以及他人命運的感覺，能夠影響以及指導他人行為的感覺。','獲得同事，公司或社團組織的尊敬，別人對你在同事中“表現出眾”的感覺程度。','工作所能帶給個人的財務收入之多寡。','不斷提昇工作績效表現的需要或感覺。','對自我價值看法，在自己心目中，與群體相較自認為出眾的程度。','與家人相處生活的時間與品質。','維持現有工作的穩定性，明天會更好的感受程度。','個人能成長的空間，能夠變得更有能力，更有效率更優秀的感覺。'];
+
+
+        let firstAnswer = 0;
+        let secondAnswer = 0;
+        let thirdAnswer = 0;
+
+        for (let i = 0; i < sortArray.length; i++) {
+            if (sortArray[i] == 1) {
+                document.getElementById("first").textContent = titleArray[i] + "，現況滿意度評分為" + answerArray[i] + "顆★";
+                firstAnswer = answerArray[i];
+                document.getElementById("firstcon").textContent = conclusionArray[i];
+            }
+            if (sortArray[i] == 2) {
+                document.getElementById("second").textContent = titleArray[i] + "，現況滿意度評分為" + answerArray[i] + "顆★";
+                secondAnswer = answerArray[i];
+                document.getElementById("secondcon").textContent = conclusionArray[i];
+            }
+            if (sortArray[i] == 3) {
+                document.getElementById("third").textContent = titleArray[i] + "，現況滿意度評分為" + answerArray[i] + "顆★";
+                thirdAnswer = answerArray[i];
+                document.getElementById("thirdcon").textContent = conclusionArray[i];
+            }
+        }
+
+        let twelfthAnswer = 0;
+        let eleventhAnswer = 0;
+        let tenthAnswer = 0;
+
+        for (let i = 0; i < sortArray.length; i++) {
+            if (sortArray[i] == 12) {
+                document.getElementById("twelfth").textContent = titleArray[i] + "，滿意度為" + answerArray[i] + "顆★";
+                twelfthAnswer = answerArray[i];
+                document.getElementById("twelfthcon").textContent = conclusionArray[i];
+            }
+            if (sortArray[i] == 11) {
+                document.getElementById("eleventh").textContent = titleArray[i] + "，滿意度為" + answerArray[i] + "顆★";
+                eleventhAnswer = answerArray[i];
+                document.getElementById("eleventhcon").textContent = conclusionArray[i];
+            }
+            if (sortArray[i] == 10) {
+                document.getElementById("tenth").textContent = titleArray[i] + "，滿意度為" + answerArray[i] + "顆★";
+                tenthAnswer = answerArray[i];
+                document.getElementById("tenthcon").textContent = conclusionArray[i];
+            }
+        }
+    
+        const labelsFirstArray = [document.getElementById("first").textContent, document.getElementById("second").textContent, document.getElementById("third").textContent];
+        const dataFirst = {
+            labels: labelsFirstArray,
+            datasets: [{
+            label: '最急迫想要擁有的現況滿意評分',
+            data: [firstAnswer, secondAnswer, thirdAnswer],
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)'
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)'
+            ],
+            borderWidth: 1
+            }]
+        };
+
+        const configFirst = {
+            type: 'bar',
+            data: dataFirst,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+
+        const myChartFirst = new Chart(    
+            document.getElementById('theChartFirst'),
+            configFirst
+        );
+        
+
+        const labelsLastArray = [document.getElementById("twelfth").textContent, document.getElementById("eleventh").textContent, document.getElementById("tenth").textContent];
+        const dataLast = {
+            labels: labelsLastArray,
+            datasets: [{
+            label: '最不急迫想要擁有的現況滿意評分',
+            data: [twelfthAnswer, eleventhAnswer, tenthAnswer],
+            backgroundColor: [
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1
+            }]
+        };
+
+        const configLast = {
+            type: 'bar',
+            data: dataLast,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+
+        const myChartLast = new Chart(    
+            document.getElementById('theChartLast'),
+            configLast
+        );
+        
+        const labels = titleArray; 
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '現況滿意度評分',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: answerArray
+            }]
+        };
+        const config = {
+                type: 'line',
+                data: data,
+                options: {}
+        };
+
+        const myChart = new Chart(    
+            document.getElementById('theChart'),
+            config
+        );
+        
+        /*
+        const data = {
+            labels: labelsFirstArray,
+            datasets: [{
+            label: '最急迫想要擁有的現況滿意評分',
+            data: [firstAnswer, secondAnswer, thirdAnswer],
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)'
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)'
+            ],
+            borderWidth: 1
+            }]
+        }
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+
+        const myChart = new Chart(    
+            document.getElementById('theChart'),
+            config
+        );
+        */
+    }
+
+</script>
+
+</html>
